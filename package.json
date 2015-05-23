@@ -1,0 +1,16 @@
+{
+  "name": "nrtv-element-tie",
+  "version": "0.1.0",
+  "description": "Tells a server how to tell the browser to show an element",
+  "main": "element-tie.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/erikpukinskis/nrtv-element-tie.git"
+  },
+  "dependencies": {
+    "nrtv-component": "*",
+    "nrtv-element": "*"
+  },
+  "license": "ISC",
+  "homepage": "https://github.com/erikpukinskis/nrtv-element-tie"
+}
