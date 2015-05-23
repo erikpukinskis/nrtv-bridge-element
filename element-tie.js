@@ -3,9 +3,8 @@ if (typeof define !== 'function') {
     module)}
 
 define(
-  "nrtv-element-tie",
-  ["nrtv-component", "nrtv-element"],
-  function(component, element) {
+  ["nrtv-element"],
+  function(element) {
 
     function ElementTie() {
       this.el = element.apply(null, arguments)
@@ -31,8 +30,10 @@ define(
         return show(this.el.id).evalResponse()
       }
     
-    component.addTypeOfTie(
-      "element", ElementTie
-    )
+    return function(component) {
+      component.addTypeOfTie(
+        "element", ElementTie
+      )
+    }
   }
 )
