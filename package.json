@@ -1,7 +1,7 @@
 {
   "name": "nrtv-element-tie",
   "version": "0.2.0",
-  "description": "Tells a server how to tell the browser to show an element",
+  "description": "Tells a server how to use a bridge to do stuff with elements in the browser",
   "main": "element-tie.js",
   "repository": {
     "type": "git",
