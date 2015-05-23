@@ -8,8 +8,16 @@
     "url": "https://github.com/erikpukinskis/nrtv-element-tie.git"
   },
   "dependencies": {
+    "amdefine": "*",
     "nrtv-component": "*",
     "nrtv-element": "*"
+  },
+  "scripts": {
+    "test": "node test.js"
+  },
+  "devDependencies": {
+    "requirejs": "*",
+    "chai": "*"
   },
   "license": "ISC",
   "homepage": "https://github.com/erikpukinskis/nrtv-element-tie"
