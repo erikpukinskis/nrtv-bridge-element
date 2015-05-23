@@ -1,6 +1,6 @@
 {
   "name": "nrtv-element-tie",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Tells a server how to tell the browser to show an element",
   "main": "element-tie.js",
   "repository": {
