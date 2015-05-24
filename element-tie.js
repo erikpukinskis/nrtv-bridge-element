@@ -7,14 +7,16 @@ define(
   function(element) {
 
     function ElementTie() {
+      this styles = []
+
       this.el = element.apply(null, arguments)
 
       this.id = this.el.assignId()
     }
 
-    ElementTie.prototype.html =
+    ElementTie.prototype.render =
       function() {
-        return this.el.html()
+        return this.el.render()
       }
 
     function showElement(id) {
@@ -29,7 +31,7 @@ define(
 
         return show(this.el.id).evalResponse()
       }
-    
+
     return function(component) {
       component.addTypeOfTie(
         "element", ElementTie
