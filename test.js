@@ -44,7 +44,7 @@ library.define (
         element(
           "button.do-it",
           {
-            onclick: textSomeone.makeRequestJs()
+            onclick: textSomeone.bindOnClient().evalable()
           },
           "Do iiiiit"
         )
