@@ -4,16 +4,17 @@
   "description": "Tells a server how to use a bridge to do stuff with elements in the browser",
   "main": "bridge-element.js",
   "dependencies": {
-    "amdefine": "*",
-    "nrtv-component": "*",
-    "nrtv-element": "*"
+    "nrtv-library": "*",
+    "nrtv-element": "*",
+    "nrtv-browser-bridge": "*"
   },
   "scripts": {
-    "test": "node test.js"
+    "test": "node --harmony test.js"
   },
   "devDependencies": {
-    "requirejs": "*",
-    "chai": "*"
+    "nrtv-bridge-route": "*",
+    "sinon": "*",
+    "zombie": "*"
   },
   "license": "ISC",
   "homepage": "https://github.com/erikpukinskis/nrtv-bridge-element",

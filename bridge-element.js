@@ -1,20 +1,24 @@
-if (typeof define !== 'function') {
-  var define = require('amdefine')(
-    module)}
+var library = require("nrtv-library")(require)
 
-define(
-  ["nrtv-element"],
-  function(element) {
+module.exports = library.export(
+  "bridge-element",
+  ["nrtv-element", "nrtv-browser-bridge"],
+  function(element, BrowserBridge) {
 
-    function ElementTie() {
-      this styles = []
-
+    function BridgeElement() {
       this.el = element.apply(null, arguments)
 
       this.id = this.el.assignId()
+
+      this.bridge = BrowserBridge.collective()
     }
 
-    ElementTie.prototype.render =
+    BridgeElement.prototype.element =
+      function() {
+        return this.el
+      }
+
+    BridgeElement.prototype.render =
       function() {
         return this.el.render()
       }
@@ -24,18 +28,14 @@ define(
       el.removeClass("hidden")
     }
 
-    ElementTie.prototype.showOnClient =
-      function(bridge) {
-        var show = bridge
+    BridgeElement.prototype.showOnClient =
+      function() {
+        var show = this.bridge
         .defineOnClient(showElement)
 
         return show(this.el.id).evalResponse()
       }
 
-    return function(component) {
-      component.addTypeOfTie(
-        "element", ElementTie
-      )
-    }
+    return BridgeElement
   }
 )
