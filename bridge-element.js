@@ -33,7 +33,7 @@ module.exports = library.export(
         var show = this.bridge
         .defineOnClient(showElement)
 
-        return show(this.el.id).evalResponse()
+        return show.withArgs(this.el.id).evalResponse()
       }
 
     return BridgeElement
