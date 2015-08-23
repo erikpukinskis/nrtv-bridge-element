@@ -14,7 +14,7 @@
   "devDependencies": {
     "nrtv-bridge-route": "*",
     "sinon": "*",
-    "zombie": "*"
+    "nrtv-browse": "*"
   },
   "license": "ISC",
   "homepage": "https://github.com/erikpukinskis/nrtv-bridge-element",

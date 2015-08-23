@@ -73,8 +73,8 @@ library.define (
 
 library.test(
   "important people are texted",
-  ["text-important-people", "sms", "sinon", "zombie", "html"],
-  function(expect, done, Texter, sms, sinon, Browser, html) {
+  ["text-important-people", "sms", "sinon", "nrtv-browse", "html"],
+  function(expect, done, Texter, sms, sinon, browse, html) {
 
     sinon.stub(sms, 'send')
 
@@ -82,23 +82,19 @@ library.test(
 
     instance.start(3090)
 
-    Browser.localhost("localhost", 3090);
+    browse("http://localhost:3090",
+      function(browser) {
 
-    var browser = new Browser()
-    browser.on("error", function(e) {
-      throw(e)
-    })
+        browser.assert.hasClass('.success', 'hidden')
 
-    browser.visit("/", function() {
-      browser.assert.hasClass('.success', 'hidden')
+        browser.pressButton(
+          ".do-it",
+          runChecks.bind(null, browser)
+        )
+      }
+    )
 
-      browser.pressButton(
-        ".do-it",
-        runChecks
-      )
-    })
-
-    function runChecks() {
+    function runChecks(browser) {
       instance.stop()
       console.log("\n==============\n")
       console.log(html.prettyPrint(browser.html()))
