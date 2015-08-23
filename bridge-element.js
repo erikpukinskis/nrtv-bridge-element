@@ -9,8 +9,6 @@ module.exports = library.export(
       this.el = element.apply(null, arguments)
 
       this.id = this.el.assignId()
-
-      this.bridge = BrowserBridge.collective()
     }
 
     BridgeElement.prototype.element =
@@ -30,10 +28,10 @@ module.exports = library.export(
 
     BridgeElement.prototype.showOnClient =
       function() {
-        var show = this.bridge
+        var show = BrowserBridge
         .defineOnClient(showElement)
 
-        return show.withArgs(this.el.id).evalResponse()
+        return show.withArgs(this.el.id).ajaxResponse()
       }
 
     return BridgeElement

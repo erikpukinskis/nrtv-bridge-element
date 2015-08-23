@@ -100,7 +100,6 @@ library.test(
 
     function runChecks() {
       instance.stop()
-
       console.log("\n==============\n")
       console.log(html.prettyPrint(browser.html()))
 
