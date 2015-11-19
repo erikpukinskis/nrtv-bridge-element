@@ -25,7 +25,7 @@ library.define (
           "Success! You da real MVP."
         )
 
-      var showSuccess = successMessage.show.defineOnClient()
+      var showSuccess = successMessage.defineShowInBrowser()
 
       server.addRoute(
         "post",
@@ -114,7 +114,7 @@ test.using(
         browser.done()
         server.stop()
         done()
-      }      
+      }
     }
 
   }
