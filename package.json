@@ -1,6 +1,6 @@
 {
   "name": "nrtv-bridge-element",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "description": "Tells a server how to use a bridge to do stuff with elements in the browser",
   "main": "bridge-element.js",
   "dependencies": {
