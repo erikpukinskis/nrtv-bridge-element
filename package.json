@@ -9,12 +9,14 @@
     "nrtv-browser-bridge": "*"
   },
   "scripts": {
-    "test": "node --harmony test.js"
+    "test": "node test.js"
   },
   "devDependencies": {
-    "nrtv-bridge-route": "*",
+    "nrtv-test": "*",
     "sinon": "*",
-    "nrtv-browse": "*"
+    "nrtv-browse": "*",
+    "nrtv-server": "*",
+    "nrtv-make-request": "*"
   },
   "license": "ISC",
   "homepage": "https://github.com/erikpukinskis/nrtv-bridge-element",

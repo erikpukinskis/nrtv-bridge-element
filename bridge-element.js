@@ -3,12 +3,13 @@ var library = require("nrtv-library")(require)
 module.exports = library.export(
   "nrtv-bridge-element",
   ["nrtv-element", "nrtv-browser-bridge"],
-  function(element, BrowserBridge) {
+  function(element, bridge) {
 
     function BridgeElement() {
       this.el = element.apply(null, arguments)
 
-      this.id = this.el.assignId()
+      this.el.assignId()
+      this.show.id = this.el.id
     }
 
     BridgeElement.prototype.element =
@@ -22,17 +23,25 @@ module.exports = library.export(
       }
 
     function showElement(id) {
-      var el = $("#"+id)
-      el.removeClass("hidden")
+      var el = document.getElementById(id)
+      el.className = el.className.replace(/\bhidden\b/, " ")
     }
 
-    BridgeElement.prototype.showOnClient =
-      function() {
-        var show = BrowserBridge
-        .defineOnClient(showElement)
+    // Should this be bridgeElement.show.bindOnClient() to make it more obvious what's happening?
 
-        return show.withArgs(this.el.id).ajaxResponse()
+    BridgeElement.prototype.show = {
+
+      id: undefined,
+
+      defineOnClient: function() {
+        if (!this.showBinding) {
+          this.showBinding = bridge.defineFunction(showElement).withArgs(this.id)
+        }
+
+        return this.showBinding
       }
+
+    }
 
     return BridgeElement
   }

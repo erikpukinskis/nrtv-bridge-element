@@ -1,6 +1,6 @@
-var library = require("nrtv-library")(require)
+var test = require("nrtv-test")(require)
+var library = test.library
 
-// We'll need an sms module to exist, but we're not going to actually use it, so let's just make an empty one.
 
 library.define("sms", function() {
   return {
@@ -14,16 +14,20 @@ library.define("sms", function() {
 library.define (
   "text-important-people",
 
-  ["sms", "./bridge-element", "nrtv-bridge-route", "nrtv-element", "nrtv-server"],
-  function(sms, BridgeElement, BridgeRoute, element, Server) {
+  ["sms", "./bridge-element", "nrtv-server", "nrtv-element", "nrtv-make-request", "nrtv-browser-bridge"],
+  function(sms, BridgeElement, server, element, makeRequest, bridge) {
 
     function Texter() {
 
-      var successMessage = new BridgeElement(".success.hidden", "Success! You da real MVP.")
+      var successMessage =
+        new BridgeElement(
+          ".success.hidden",
+          "Success! You da real MVP."
+        )
 
-      var showSuccess = successMessage.showOnClient()
+      var showSuccess = successMessage.show.defineOnClient()
 
-      var textSomeone = new BridgeRoute(
+      server.addRoute(
         "post",
         "/text",
         function(x, response) {
@@ -32,9 +36,20 @@ library.define (
             "Erik, do something!"
           )
 
-          response.json(showSuccess)
+          console.log("HAMMER TOAD:", showSuccess.ajaxResponse())
+          response.json(showSuccess.ajaxResponse())
         }
       )
+
+      var textSomeone = makeRequest
+        .defineInBrowser()
+        .withArgs(
+          {
+            method: "post",
+            path: "/text"
+          },
+          bridge.handle()
+        )
 
       var body = element([
         element(
@@ -44,75 +59,62 @@ library.define (
         element(
           "button.do-it",
           {
-            onclick: textSomeone.bindOnClient().evalable()
+            onclick: textSomeone.evalable()
           },
           "Do iiiiit"
         )
       ])
 
-      var sender = BridgeRoute.sendPage(body)
-
-      new BridgeRoute(
-        "get",
-        "/",
-        sender
-      )
+      server.addRoute("get", "/", bridge.sendPage(body))
     }
-
-    var server = Server.collective()
-
-    Texter.prototype.start = server.start.bind(server)
-
-    Texter.prototype.stop = server.stop.bind(server)
 
     return Texter
   }
 )
 
-// Let's test to see if that works:
 
-library.test(
+test.using(
   "important people are texted",
-  ["text-important-people", "sms", "sinon", "nrtv-browse", "html"],
-  function(expect, done, Texter, sms, sinon, browse, html) {
+  ["text-important-people", "sms", "sinon", "nrtv-browse", "html", "nrtv-server"],
+  function(expect, done, Texter, sms, sinon, browse, html, server) {
 
-    sinon.stub(sms, 'send')
+    sinon.stub(sms, "send")
 
     var instance = new Texter()
 
-    instance.start(3090)
+    server.start(3090)
 
     browse("http://localhost:3090",
       function(browser) {
 
-        browser.assert.hasClass('.success', 'hidden')
+        browser.assertHasClass(".success", "hidden", hitButton)
 
-        browser.pressButton(
-          ".do-it",
-          runChecks.bind(null, browser)
-        )
+        function hitButton() {
+          browser.pressButton(
+            ".do-it",
+            runChecks.bind(null, browser)
+          )
+        }
       }
     )
 
     function runChecks(browser) {
-      instance.stop()
-      console.log("\n==============\n")
-      console.log(html.prettyPrint(browser.html()))
 
-      browser.assert.hasNoClass('.success', 'hidden')
+      browser.assertNoClass(".success", "hidden", expectMessage)
 
-      console.log("message is visible!")
+      function expectMessage() {
+        done.ish("message is visible!")
 
-      // And then we just expect that someone tried to sms me. This is a handy side-effect of having stubbed sms.send before. Now we can check to see if it was called. You can't do that unless you stub it.
+        expect(sms.send).to.have
+        .been.calledWith(
+          "812-320-1877",
+          "Erik, do something!"
+        )
 
-      expect(sms.send).to.have
-      .been.calledWith(
-        "812-320-1877",
-        "Erik, do something!"
-      )
-
-      console.log("sms got called!")
-      done()
+        browser.done()
+        server.stop()
+        done()
+      }      
     }
 
   }
