@@ -15,9 +15,12 @@ library.define (
   "text-important-people",
 
   ["sms", "./bridge-element", "nrtv-server", "nrtv-element", "nrtv-make-request", "nrtv-browser-bridge"],
-  function(sms, BridgeElement, server, element, makeRequest, bridge) {
+  function(sms, BridgeElement, Server, element, makeRequest, bridge) {
 
     function Texter() {
+      var server = new Server()
+      this.start = server.start.bind(server)
+      this.stop = server.stop.bind(server)
 
       var successMessage =
         new BridgeElement(
@@ -75,14 +78,14 @@ library.define (
 
 test.using(
   "important people are texted",
-  ["text-important-people", "sms", "sinon", "nrtv-browse", "html", "nrtv-server"],
-  function(expect, done, Texter, sms, sinon, browse, html, server) {
+  ["text-important-people", "sms", "sinon", "nrtv-browse", "html"],
+  function(expect, done, Texter, sms, sinon, browse, html) {
 
     sinon.stub(sms, "send")
 
     var instance = new Texter()
 
-    server.start(3090)
+    instance.start(3090)
 
     browse("http://localhost:3090",
       function(browser) {
@@ -112,7 +115,7 @@ test.using(
         )
 
         browser.done()
-        server.stop()
+        instance.stop()
         done()
       }
     }
