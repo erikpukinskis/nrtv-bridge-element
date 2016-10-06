@@ -5,8 +5,8 @@
   "main": "bridge-element.js",
   "dependencies": {
     "nrtv-library": "*",
-    "nrtv-element": "*",
-    "nrtv-browser-bridge": "*"
+    "web-element": "*",
+    "browser-bridge": "*"
   },
   "scripts": {
     "test": "node test.js"
@@ -16,7 +16,7 @@
     "sinon": "*",
     "nrtv-browse": "*",
     "nrtv-server": "*",
-    "nrtv-make-request": "*"
+    "make-request": "*"
   },
   "license": "ISC",
   "homepage": "https://github.com/erikpukinskis/nrtv-bridge-element",

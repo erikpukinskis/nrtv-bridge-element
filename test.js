@@ -14,13 +14,15 @@ library.define("sms", function() {
 library.define (
   "text-important-people",
 
-  ["sms", "./bridge-element", "nrtv-server", "nrtv-element", "nrtv-make-request", "nrtv-browser-bridge"],
-  function(sms, BridgeElement, Server, element, makeRequest, bridge) {
+  ["sms", "./bridge-element", "nrtv-server", "web-element", "make-request", "browser-bridge"],
+  function(sms, BridgeElement, Server, element, makeRequest, BrowserBridge) {
 
     function Texter() {
       var server = new Server()
       this.start = server.start.bind(server)
       this.stop = server.stop.bind(server)
+
+      var bridge = new BrowserBridge()
 
       var successMessage =
         new BridgeElement(
@@ -45,7 +47,7 @@ library.define (
       )
 
       var textSomeone = makeRequest
-        .defineInBrowser()
+        .defineOn(bridge)
         .withArgs(
           {
             method: "post",
